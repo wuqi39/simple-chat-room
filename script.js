@@ -21,7 +21,7 @@ const passwordError = document.getElementById('password-error');
 function validateUsername() {
     const username = usernameInput.value;
     if (username === '') {
-        usernameError.textContent = 'Username cannot be empty';
+        usernameError.textContent = '用户名不能为空';
         return false;
     } else {
         usernameError.textContent = '';
@@ -32,10 +32,10 @@ function validateUsername() {
 function validatePassword() {
     const password = passwordInput.value;
     if (password === '') {
-        passwordError.textContent = 'Password cannot be empty';
+        passwordError.textContent = '密码不能为空';
         return false;
     } else if (password.length < 6) {
-        passwordError.textContent = 'Password must be at least 6 characters long';
+        passwordError.textContent = '密码至少需要 6 个字符';
         return false;
     } else {
         passwordError.textContent = '';
@@ -63,8 +63,8 @@ loginButton.addEventListener('click', async () => {
             password
         });
         if (error) {
-            console.error('Login error:', error);
-            alert('Login failed. Please check your username and password.');
+            console.error('登录错误:', error);
+            alert('登录失败。请检查你的用户名和密码。');
         } else {
             authContainer.classList.add('hidden');
             chatContainer.classList.remove('hidden');
@@ -95,8 +95,8 @@ registerButton.addEventListener('click', async () => {
             password
         });
         if (error) {
-            console.error('Register error:', error);
-            alert('Registration failed. Please try again.');
+            console.error('注册错误:', error);
+            alert('注册失败。请重试。');
         } else {
             authContainer.classList.add('hidden');
             chatContainer.classList.remove('hidden');
@@ -142,7 +142,7 @@ sendButton.addEventListener('click', async () => {
     if (message) {
         const { error } = await supabase.from('messages').insert([{ message }]);
         if (error) {
-            console.error('Error sending message:', error);
+            console.error('发送消息错误:', error);
         } else {
             messageInput.value = '';
         }
@@ -156,7 +156,7 @@ messageInput.addEventListener('keydown', async (event) => {
         if (message) {
             const { error } = await supabase.from('messages').insert([{ message }]);
             if (error) {
-                console.error('Error sending message:', error);
+                console.error('发送消息错误:', error);
             } else {
                 messageInput.value = '';
             }

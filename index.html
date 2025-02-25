@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Static Chat Room with Supabase</title>
+    <title> Kwin 的静态聊天室</title>
     <link rel="stylesheet" href="styles.css">
     <!-- 引入 Supabase JavaScript 客户端 -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.31.0/dist/umd/supabase.min.js"></script>
@@ -13,25 +13,25 @@
 <body>
     <!-- 登录注册部分 -->
     <div id="auth-container" class="auth-container">
-        <h2>Login or Register</h2>
+        <h2>登录或注册</h2>
         <div>
-            <input type="text" id="username" placeholder="Username">
+            <input type="text" id="username" placeholder="用户名">
             <div id="username-error" class="error-message"></div>
         </div>
         <div>
-            <input type="password" id="password" placeholder="Password">
+            <input type="password" id="password" placeholder="密码">
             <span class="password-toggle" onclick="togglePasswordVisibility()">👁</span>
             <div id="password-error" class="error-message"></div>
         </div>
-        <button id="login-button">Login</button>
-        <button id="register-button">Register</button>
-        <button id="guest-button">Continue as Guest</button>
+        <button id="login-button">登录</button>
+        <button id="register-button">注册</button>
+        <button id="guest-button">以游客身份继续</button>
     </div>
     <!-- 聊天部分 -->
     <div id="chat-container" class="chat-container hidden">
         <div id="chat-messages"></div>
-        <input type="text" id="message-input" placeholder="Type your message...">
-        <button id="send-button">Send</button>
+        <input type="text" id="message-input" placeholder="输入你的消息...">
+        <button id="send-button">发送</button>
     </div>
     <script src="script.js"></script>
 </body>
