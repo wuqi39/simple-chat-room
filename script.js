@@ -1,5 +1,8 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // 直接使用全局变量 SupabaseClient
+   
+    // 保留 ES 模块导入
+    const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.31.0/dist/umd/supabase.min.js');
+
     const supabaseUrl = 'https://kcuktgoixvxbrllmudvs.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjdWt0Z29peHZ4YnJsbG11ZHZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA0MTExNDAsImV4cCI6MjA1NTk4NzE0MH0.ZzemYLWDwatGEePs1LXeV8DB8hs_7wbVid6AkG8ZceY';
     const supabase = new SupabaseClient(supabaseUrl, supabaseKey);
