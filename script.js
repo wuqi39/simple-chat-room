@@ -14,62 +14,106 @@ const guestButton = document.getElementById('guest-button');
 const chatMessages = document.getElementById('chat-messages');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
+const usernameError = document.getElementById('username-error');
+const passwordError = document.getElementById('password-error');
+
+// 表单验证函数
+function validateUsername() {
+    const username = usernameInput.value;
+    if (username === '') {
+        usernameError.textContent = 'Username cannot be empty';
+        return false;
+    } else {
+        usernameError.textContent = '';
+        return true;
+    }
+}
+
+function validatePassword() {
+    const password = passwordInput.value;
+    if (password === '') {
+        passwordError.textContent = 'Password cannot be empty';
+        return false;
+    } else if (password.length < 6) {
+        passwordError.textContent = 'Password must be at least 6 characters long';
+        return false;
+    } else {
+        passwordError.textContent = '';
+        return true;
+    }
+}
+
+// 密码可见切换函数
+function togglePasswordVisibility() {
+    const passwordInput = document.getElementById('password');
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+    } else {
+        passwordInput.type = 'password';
+    }
+}
 
 // 登录功能
 loginButton.addEventListener('click', async () => {
-    const username = usernameInput.value;
-    const password = passwordInput.value;
-    const { data, error } = await supabase.auth.signInWithPassword({
-        email: username,
-        password
-    });
-    if (error) {
-        console.error('Login error:', error);
-    } else {
-        authContainer.classList.add('hidden');
-        chatContainer.classList.remove('hidden');
-        // 监听新消息
-        const realtime = supabase
-          .channel('chat-channel')
-          .on(
-                'postgres_changes',
-                { event: 'INSERT', schema: 'public', table: 'messages' },
-                (payload) => {
-                    const messageElement = document.createElement('p');
-                    messageElement.textContent = payload.new.message;
-                    chatMessages.appendChild(messageElement);
-                }
-            )
-          .subscribe();
+    if (validateUsername() && validatePassword()) {
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+        const { data, error } = await supabase.auth.signInWithPassword({
+            email: username,
+            password
+        });
+        if (error) {
+            console.error('Login error:', error);
+            alert('Login failed. Please check your username and password.');
+        } else {
+            authContainer.classList.add('hidden');
+            chatContainer.classList.remove('hidden');
+            // 监听新消息
+            const realtime = supabase
+              .channel('chat-channel')
+              .on(
+                    'postgres_changes',
+                    { event: 'INSERT', schema: 'public', table: 'messages' },
+                    (payload) => {
+                        const messageElement = document.createElement('p');
+                        messageElement.textContent = payload.new.message;
+                        chatMessages.appendChild(messageElement);
+                    }
+                )
+              .subscribe();
+        }
     }
 });
 
 // 注册功能
 registerButton.addEventListener('click', async () => {
-    const username = usernameInput.value;
-    const password = passwordInput.value;
-    const { data, error } = await supabase.auth.signUp({
-        email: username,
-        password
-    });
-    if (error) {
-        console.error('Register error:', error);
-    } else {
-        authContainer.classList.add('hidden');
-        chatContainer.classList.remove('hidden');
-        // 监听新消息
-        const realtime = supabase
-          .channel('chat-channel')
-          .on(
-                'postgres_changes',
-                { event: 'INSERT', schema: 'public', table: 'messages' },
-                (payload) => {
-                    const messageElement = document.createElement('p');
-                    messageElement.textContent = payload.new.message;
-                    chatMessages.appendChild(messageElement);
-                }
-            )
-          .subscribe();
+    if (validateUsername() && validatePassword()) {
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+        const { data, error } = await supabase.auth.signUp({
+            email: username,
+            password
+        });
+        if (error) {
+            console.error('Register error:', error);
+            alert('Registration failed. Please try again.');
+        } else {
+            authContainer.classList.add('hidden');
+            chatContainer.classList.remove('hidden');
+            // 监听新消息
+            const realtime = supabase
+              .channel('chat-channel')
+              .on(
+                    'postgres_changes',
+                    { event: 'INSERT', schema: 'public', table: 'messages' },
+                    (payload) => {
+                        const messageElement = document.createElement('p');
+                        messageElement.textContent = payload.new.message;
+                        chatMessages.appendChild(messageElement);
+                    }
+                )
+              .subscribe();
+        }
     }
 });
 

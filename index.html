@@ -14,8 +14,15 @@
     <!-- 登录注册部分 -->
     <div id="auth-container" class="auth-container">
         <h2>Login or Register</h2>
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
+        <div>
+            <input type="text" id="username" placeholder="Username">
+            <div id="username-error" class="error-message"></div>
+        </div>
+        <div>
+            <input type="password" id="password" placeholder="Password">
+            <span class="password-toggle" onclick="togglePasswordVisibility()">👁</span>
+            <div id="password-error" class="error-message"></div>
+        </div>
         <button id="login-button">Login</button>
         <button id="register-button">Register</button>
         <button id="guest-button">Continue as Guest</button>
