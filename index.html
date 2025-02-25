@@ -11,7 +11,17 @@
 </head>
 
 <body>
-    <div id="chat-container">
+    <!-- 登录注册部分 -->
+    <div id="auth-container" class="auth-container">
+        <h2>Login or Register</h2>
+        <input type="text" id="username" placeholder="Username">
+        <input type="password" id="password" placeholder="Password">
+        <button id="login-button">Login</button>
+        <button id="register-button">Register</button>
+        <button id="guest-button">Continue as Guest</button>
+    </div>
+    <!-- 聊天部分 -->
+    <div id="chat-container" class="chat-container hidden">
         <div id="chat-messages"></div>
         <input type="text" id="message-input" placeholder="Type your message...">
         <button id="send-button">Send</button>
