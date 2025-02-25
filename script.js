@@ -58,29 +58,43 @@ loginButton.addEventListener('click', async () => {
     if (validateUsername() && validatePassword()) {
         const username = usernameInput.value;
         const password = passwordInput.value;
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email: username,
-            password
-        });
-        if (error) {
-            console.error('登录错误:', error);
+
+        // 先根据用户名查找对应的用户信息
+        const { data: userProfileData, error: userProfileError } = await supabase
+          .from('user_profiles')
+          .select('id')
+          .eq('username', username)
+          .single();
+
+        if (userProfileError) {
+            console.error('查找用户信息错误:', userProfileError);
             alert('登录失败。请检查你的用户名和密码。');
         } else {
-            authContainer.classList.add('hidden');
-            chatContainer.classList.remove('hidden');
-            // 监听新消息
-            const realtime = supabase
-              .channel('chat-channel')
-              .on(
-                    'postgres_changes',
-                    { event: 'INSERT', schema: 'public', table: 'messages' },
-                    (payload) => {
-                        const messageElement = document.createElement('p');
-                        messageElement.textContent = payload.new.message;
-                        chatMessages.appendChild(messageElement);
-                    }
-                )
-              .subscribe();
+            const userId = userProfileData.id;
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: userId, // 这里假设使用用户 ID 作为邮箱，实际应用中需根据情况调整
+                password
+            });
+            if (error) {
+                console.error('登录错误:', error);
+                alert('登录失败。请检查你的用户名和密码。');
+            } else {
+                authContainer.classList.add('hidden');
+                chatContainer.classList.remove('hidden');
+                // 监听新消息
+                const realtime = supabase
+                  .channel('chat-channel')
+                  .on(
+                        'postgres_changes',
+                        { event: 'INSERT', schema: 'public', table: 'messages' },
+                        (payload) => {
+                            const messageElement = document.createElement('p');
+                            messageElement.textContent = payload.new.message;
+                            chatMessages.appendChild(messageElement);
+                        }
+                    )
+                  .subscribe();
+            }
         }
     }
 });
@@ -90,29 +104,38 @@ registerButton.addEventListener('click', async () => {
     if (validateUsername() && validatePassword()) {
         const username = usernameInput.value;
         const password = passwordInput.value;
+
+        // 先注册用户
         const { data, error } = await supabase.auth.signUp({
-            email: username,
+            email: username, // 这里简单假设邮箱和用户名相同，实际应用中可能需要分开处理
             password
         });
         if (error) {
             console.error('注册错误:', error);
             alert('注册失败。请重试。');
         } else {
-            authContainer.classList.add('hidden');
-            chatContainer.classList.remove('hidden');
-            // 监听新消息
-            const realtime = supabase
-              .channel('chat-channel')
-              .on(
-                    'postgres_changes',
-                    { event: 'INSERT', schema: 'public', table: 'messages' },
-                    (payload) => {
-                        const messageElement = document.createElement('p');
-                        messageElement.textContent = payload.new.message;
-                        chatMessages.appendChild(messageElement);
-                    }
-                )
-              .subscribe();
+            const userId = data.user.id;
+            // 将用户名插入 user_profiles 表
+            const { error: profileError } = await supabase.from('user_profiles').insert([{ id: userId, username }]);
+            if (profileError) {
+                console.error('插入用户信息错误:', profileError);
+            } else {
+                authContainer.classList.add('hidden');
+                chatContainer.classList.remove('hidden');
+                // 监听新消息
+                const realtime = supabase
+                  .channel('chat-channel')
+                  .on(
+                        'postgres_changes',
+                        { event: 'INSERT', schema: 'public', table: 'messages' },
+                        (payload) => {
+                            const messageElement = document.createElement('p');
+                            messageElement.textContent = payload.new.message;
+                            chatMessages.appendChild(messageElement);
+                        }
+                    )
+                  .subscribe();
+            }
         }
     }
 });
