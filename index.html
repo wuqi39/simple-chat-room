@@ -5,9 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Kwin 的静态聊天室</title>
-    <link rel="icon" href="path/to/your/favicon.ico" type="image/x-icon">
-    <!-- 引入 UMD 版本的 @supabase/supabase-js -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- 引入 Supabase JavaScript 客户端 -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.31.0/dist/umd/supabase.min.js"></script>
+    <!-- 引入 DOMPurify -->
+    <script src="/node_modules/dompurify/dist/purify.min.js"></script>
 </head>
 
 <body>
@@ -22,6 +24,8 @@
             <input type="password" id="password" placeholder="密码">
             <span class="password-toggle" onclick="togglePasswordVisibility()">👁</span>
             <div id="password-error" class="error-message"></div>
+            <!-- 添加密码强度提示元素 -->
+            <div id="password-strength" class="password-strength"></div>
         </div>
         <button id="login-button">登录</button>
         <button id="register-button">注册</button>
@@ -33,8 +37,7 @@
         <input type="text" id="message-input" placeholder="输入你的消息...">
         <button id="send-button">发送</button>
     </div>
-    <!-- 将脚本放在 body 末尾 -->
-    <script type="module" src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

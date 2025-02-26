@@ -120,3 +120,12 @@ body {
     font-size: 12px;
     margin-top: 5px;
 }
+
+/* 密码强度提示样式 */
+.password-strength {
+    font-size: 0.8rem;
+    margin-top: 4px;
+}
+.strength-weak { color: red; }
+.strength-medium { color: orange; }
+.strength-strong { color: green; }
