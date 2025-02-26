@@ -16,6 +16,8 @@ const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 const usernameError = document.getElementById('username-error');
 const passwordError = document.getElementById('password-error');
+const imageUpload = document.getElementById('image-upload');
+const loadMoreButton = document.getElementById('load-more');
 
 // 表单验证函数
 function validateUsername() {
@@ -68,6 +70,9 @@ loginButton.addEventListener('click', async () => {
         } else {
             authContainer.classList.add('hidden');
             chatContainer.classList.remove('hidden');
+            // 初始化加载消息
+            currentPage = 1;
+            loadMessages();
             // 监听新消息
             const realtime = supabase
               .channel('chat-channel')
@@ -98,6 +103,9 @@ registerButton.addEventListener('click', async () => {
         } else {
             authContainer.classList.add('hidden');
             chatContainer.classList.remove('hidden');
+            // 初始化加载消息
+            currentPage = 1;
+            loadMessages();
             // 监听新消息
             const realtime = supabase
               .channel('chat-channel')
@@ -117,6 +125,9 @@ registerButton.addEventListener('click', async () => {
 guestButton.addEventListener('click', () => {
     authContainer.classList.add('hidden');
     chatContainer.classList.remove('hidden');
+    // 初始化加载消息
+    currentPage = 1;
+    loadMessages();
     // 监听新消息
     const realtime = supabase
       .channel('chat-channel')
@@ -140,7 +151,7 @@ async function sendMessage() {
 
     const { error } = await supabase
       .from('messages')
-      .insert([{ content: cleanText }]);
+      .insert([{ content: cleanText, type: 'text' }]);
 
     messageInput.value = '';
 }
@@ -171,13 +182,22 @@ passwordInput.addEventListener('input', () => {
 
 // 添加消息到UI并处理滚动
 function addMessageToUI(message) {
-    const messageElement = document.createElement('div');
-    messageElement.textContent = message.content;
-    chatMessages.appendChild(messageElement);
+    const container = document.createElement('div');
+
+    if (message.type === 'image') {
+        const img = document.createElement('img');
+        img.src = message.content;
+        img.style.maxWidth = '200px';
+        container.appendChild(img);
+    } else {
+        container.textContent = message.content;
+    }
+
+    chatMessages.appendChild(container);
 
     // 添加滚动逻辑
-    const isAtBottom = 
-        chatMessages.scrollTop + chatMessages.clientHeight >= 
+    const isAtBottom =
+        chatMessages.scrollTop + chatMessages.clientHeight >=
         chatMessages.scrollHeight - 50;
 
     if (isAtBottom) {
@@ -186,3 +206,56 @@ function addMessageToUI(message) {
         }, 100);
     }
 }
+
+// 消息分页加载
+let currentPage = 1;
+const PAGE_SIZE = 20;
+
+async function loadMessages() {
+    const { data } = await supabase
+      .from('messages')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .range((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE - 1);
+
+    data.reverse().forEach(msg => addMessageToUI(msg));
+
+    if (data.length < PAGE_SIZE) {
+        loadMoreButton.classList.add('hidden');
+    } else {
+        loadMoreButton.classList.remove('hidden');
+    }
+}
+
+loadMoreButton.addEventListener('click', () => {
+    currentPage++;
+    loadMessages();
+});
+
+// 图片消息上传逻辑
+imageUpload.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+
+    // 上传到Supabase存储
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('chat-images')
+      .upload(`images/${Date.now()}_${file.name}`, file);
+
+    if (uploadError) {
+        console.error('图片上传错误:', uploadError);
+        return;
+    }
+
+    // 获取公开URL
+    const { data: urlData } = supabase.storage
+      .from('chat-images')
+      .getPublicUrl(uploadData.path);
+
+    // 插入消息记录
+    await supabase
+      .from('messages')
+      .insert([{
+          content: urlData.publicUrl,
+          type: 'image'
+      }]);
+});

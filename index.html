@@ -36,6 +36,9 @@
         <div id="chat-messages"></div>
         <input type="text" id="message-input" placeholder="输入你的消息...">
         <button id="send-button">发送</button>
+        <input type="file" id="image-upload" accept="image/*" hidden>
+        <button onclick="document.getElementById('image-upload').click()">发送图片</button>
+        <button id="load-more" class="hidden">加载更多消息</button>
     </div>
     <script src="script.js"></script>
 </body>
