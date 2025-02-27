@@ -21,7 +21,7 @@ module.exports = {
     // 插件配置
     plugins: [
         new HtmlWebpackPlugin({
-            template: './public/index.html',
+            template: './index.html',
             filename: 'index.html'
         })
     ],
