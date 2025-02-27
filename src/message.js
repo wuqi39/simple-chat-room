@@ -1,4 +1,4 @@
-import { sendTextMessage, sendImageMessage, loadMessages } from './services/message.js';
+import { sendTextMessage, sendImageMessage, loadMessages } from './message.js';
 import DOMPurify from 'dompurify';
 
 // 获取 DOM 元素

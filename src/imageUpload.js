@@ -1,5 +1,5 @@
-import { uploadImage } from './services/storage.js';
-import { sendImageMessage } from './services/message.js';
+import { uploadImage } from './storage.js';
+import { sendImageMessage } from './message.js';
 
 // 获取 DOM 元素
 const imageUpload = document.getElementById('image-upload');
