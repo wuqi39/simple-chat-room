@@ -8,15 +8,22 @@
     <link rel="stylesheet" href="styles.css">
     <!-- 引入 Supabase JavaScript 客户端 -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.31.0/dist/umd/supabase.min.js"></script>
-    <!-- 引入 DOMPurify -->
-    <script src="/node_modules/dompurify/dist/purify.min.js"></script>
-    
 </head>
 
-
 <body>
+    <!-- 聊天部分 -->
+    <div id="chat-container" class="chat-container">
+        <div class="avatar-container">
+            <img src="avatar.png" alt="头像" id="avatar-button" onclick="toggleAuthContainer()">
+        </div>
+        <div id="chat-messages" class="chat-messages"></div>
+        <input type="text" id="message-input" placeholder="输入消息">
+        <button id="send-button">发送</button>
+        <input type="file" id="image-upload">
+        <button id="load-more">加载更多</button>
+    </div>
     <!-- 登录注册部分 -->
-    <div id="auth-container" class="auth-container">
+    <div id="auth-container" class="auth-container hidden">
         <h2>登录或注册</h2>
         <div>
             <input type="text" id="username" placeholder="用户名">
@@ -33,17 +40,7 @@
         <button id="register-button">注册</button>
         <button id="guest-button">以游客身份继续</button>
     </div>
-    <!-- 聊天部分 -->
-    <div id="chat-container" class="chat-container hidden">
-        <div id="chat-messages"></div>
-        <input type="text" id="message-input" placeholder="输入你的消息...">
-        <button id="send-button">发送</button>
-        <input type="file" id="image-upload" accept="image/*" hidden>
-        <button onclick="document.getElementById('image-upload').click()">发送图片</button>
-        <button id="load-more" class="hidden">加载更多消息</button>
-    </div>
-    <!-- 修改为正确的路径 -->
-    <script type="module" src="src/script.js"></script>
+    <script src="src/script.js"></script>
 </body>
 
 </html>

@@ -1,8 +1,7 @@
-
+import { login, register, guestLogin } from './services/auth.js';
 import { sendTextMessage, sendImageMessage, loadMessages } from './services/message.js';
 import { uploadImage } from './services/storage.js';
-import DOMPurify from 'https://cdn.jsdelivr.net/npm/dompurify@3.0.5/+esm';
-import { login, register, guestLogin } from './services/auth.js';
+import DOMPurify from 'dompurify';
 
 // 获取 DOM 元素
 const authContainer = document.getElementById('auth-container');
@@ -19,6 +18,7 @@ const usernameError = document.getElementById('username-error');
 const passwordError = document.getElementById('password-error');
 const imageUpload = document.getElementById('image-upload');
 const loadMoreButton = document.getElementById('load-more');
+const avatarButton = document.getElementById('avatar-button');
 
 // 表单验证函数
 function validateUsername() {
@@ -56,6 +56,11 @@ function togglePasswordVisibility() {
     }
 }
 
+// 显示或隐藏登录注册弹窗
+function toggleAuthContainer() {
+    authContainer.classList.toggle('hidden');
+}
+
 // 登录功能
 loginButton.addEventListener('click', async () => {
     if (validateUsername() && validatePassword()) {
@@ -67,7 +72,6 @@ loginButton.addEventListener('click', async () => {
             alert('登录失败。请检查你的用户名和密码。');
         } else {
             authContainer.classList.add('hidden');
-            chatContainer.classList.remove('hidden');
             // 初始化加载消息
             let currentPage = 1;
             const { data: messages } = await loadMessages(currentPage);
@@ -89,7 +93,6 @@ registerButton.addEventListener('click', async () => {
             alert('注册失败。请重试。');
         } else {
             authContainer.classList.add('hidden');
-            chatContainer.classList.remove('hidden');
             // 初始化加载消息
             let currentPage = 1;
             const { data: messages } = await loadMessages(currentPage);
@@ -103,7 +106,6 @@ registerButton.addEventListener('click', async () => {
 // 游客登录功能
 guestButton.addEventListener('click', async () => {
     authContainer.classList.add('hidden');
-    chatContainer.classList.remove('hidden');
     // 初始化加载消息
     let currentPage = 1;
     const { data: messages } = await loadMessages(currentPage);
@@ -197,4 +199,13 @@ imageUpload.addEventListener('change', async (e) => {
     if (url) {
         await sendImageMessage(url);
     }
+});
+
+// 初始化时以游客身份进入聊天室
+window.addEventListener('load', async () => {
+    authContainer.classList.add('hidden');
+    chatContainer.classList.remove('hidden');
+    let currentPage = 1;
+    const { data: messages } = await loadMessages(currentPage);
+    messages.reverse().forEach(msg => addMessageToUI(msg));
 });
