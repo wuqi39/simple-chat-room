@@ -1,4 +1,4 @@
-import { login, register, guestLogin } from './services/auth.js';
+import { login, register, guestLogin } from './auth.js';
 import { sendTextMessage, sendImageMessage, loadMessages } from './services/message.js';
 import { uploadImage } from './services/storage.js';
 import DOMPurify from 'dompurify';
@@ -12,8 +12,12 @@ const loginButton = document.getElementById('login-button');
 const registerButton = document.getElementById('register-button');
 const guestButton = document.getElementById('guest-button');
 const chatMessages = document.getElementById('chat-messages');
-const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
+console.log('sendButton:', sendButton);
+
+const messageInput = document.getElementById('message-input');
+console.log('messageInput:', messageInput);
+
 const usernameError = document.getElementById('username-error');
 const passwordError = document.getElementById('password-error');
 const imageUpload = document.getElementById('image-upload');
@@ -67,57 +71,7 @@ function handleError(error, message) {
     alert(message);
 }
 
-// 修改登录、注册部分的错误处理
-// 公共的初始化聊天逻辑
-async function initChat() {
-    authContainer.classList.add('hidden');
-    // 初始化加载消息
-    let currentPage = 1;
-    const { data: messages } = await loadMessages(currentPage);
-    messages.reverse().forEach(msg => addMessageToUI(msg));
-    // 监听新消息
-    // 这里暂时省略实时监听逻辑，可根据之前代码添加
-}
-
-// 登录功能
-loginButton.addEventListener('click', async () => {
-    if (validateUsername() && validatePassword()) {
-        const username = usernameInput.value;
-        const password = passwordInput.value;
-        const { data, error } = await login(username, password);
-        if (error) {
-            handleError(error, '登录失败。请检查你的用户名和密码。');
-        } else {
-            await initChat();
-        }
-    }
-});
-
-// 注册功能
-registerButton.addEventListener('click', async () => {
-    if (validateUsername() && validatePassword()) {
-        const username = usernameInput.value;
-        const password = passwordInput.value;
-        const { data, error } = await register(username, password);
-        if (error) {
-            handleError(error, '注册失败。请重试。');
-        } else {
-            await initChat();
-        }
-    }
-});
-
-// 游客登录功能
-guestButton.addEventListener('click', async () => {
-    await initChat();
-});
-
-// 初始化时以游客身份进入聊天室
-window.addEventListener('load', async () => {
-    await initChat();
-    chatContainer.classList.remove('hidden');
-});
-// 发送消息部分的错误处理
+// 发送消息
 async function sendMessage() {
     const rawText = messageInput.value;
     const cleanText = DOMPurify.sanitize(rawText.trim());
@@ -126,7 +80,7 @@ async function sendMessage() {
 
     const { error } = await sendTextMessage(cleanText);
     if (error) {
-        handleError(error, '发送消息失败，请重试。');
+        handleError(error, '消息发送失败，请重试。');
     }
     messageInput.value = '';
 }
