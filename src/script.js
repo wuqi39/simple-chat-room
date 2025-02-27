@@ -1,7 +1,7 @@
 
 import { sendTextMessage, sendImageMessage, loadMessages } from './services/message.js';
 import { uploadImage } from './services/storage.js';
-import DOMPurify from 'dompurify';
+import DOMPurify from 'https://cdn.jsdelivr.net/npm/dompurify@3.0.5/+esm';
 import { login, register, guestLogin } from './services/auth.js';
 
 // 获取 DOM 元素
