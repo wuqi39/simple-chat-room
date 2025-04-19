@@ -1,9 +1,9 @@
 // 加入群组（需提前在腾讯云控制台创建）
 function joinGroup() {
   tim.joinGroup({
-    groupID: '@TGS#165X5DTQ6', // 替换为实际群组ID
-    type: TIM.TYPES.GROUP_C2C // 或其他合适的群组类型
-  }).catch(e => console.error('入群失败:', e));
+    groupID: '@TGS#165X5DTQ6', // 需替换为实际创建的群组ID
+    type: TIM.TYPES.GROUP_C2C 
+  });
 }
 
 // 离开群组

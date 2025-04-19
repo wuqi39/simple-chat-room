@@ -1,10 +1,8 @@
 // 修改前
-import TIM from 'tim-js-sdk';
+// import TIM from './node_modules/tim-js-sdk/index.js';
 
-// 修改后（需要确认实际文件位置）
-import TIM from './node_modules/tim-js-sdk/index.js';
-// 或使用腾讯云官方推荐的 CDN 方式
-// import TIM from 'https://cdn-go.cn/aegis/sdk/tim-js-sdk-2.27.6.js';
+// 修改后（通过别名引用）
+import TIM from 'tim-js-sdk'
 
 import { LogLevel } from 'tim-js-sdk';
 import { joinGroup } from './group.js';
@@ -43,15 +41,24 @@ function handleMessageReceived(event) {
 tim.on(TIM.EVENT.MESSAGE_RECEIVED, handleMessageReceived);
 
 // 简化版游客登录（生产环境需后端签发userSig）
-async function loginAsGuest() {
-  // 添加登录状态检查
-  if (tim.isLogin()) return;
+document.getElementById('login-button').addEventListener('click', async () => {
+  const userID = `user_${Math.floor(Math.random() * 10000)}`;
+  // 临时生成测试用 userSig（生产环境必须由后端生成）
+  const userSig = tim.genTestUserSig(userID).userSig;
+  
+  await loginAsGuest(userID, userSig);
+});
 
-  // 原有登录逻辑...
+// 修改登录函数接收参数
+async function loginAsGuest(userID, userSig) {
+  if (tim.isLogin()) return;
+  
   try {
     await tim.login({ userID, userSig });
     console.log('登录成功，当前用户:', userID);
-    joinGroup();
+    await joinGroup();
+    // 登录成功后自动隐藏登录框
+    document.getElementById('auth-container').classList.add('hidden');
   } catch (e) {
     console.error('登录失败:', e);
   }
@@ -66,3 +73,14 @@ function toggleAuthContainer() {
 (function() {
   window.toggleAuthContainer = toggleAuthContainer;
 })();
+
+// 在文件最后添加消息发送逻辑
+document.getElementById('send-button').addEventListener('click', () => {
+  const messageInput = document.getElementById('message-input');
+  tim.sendMessage({
+    to: '@TGS#165X5DTQ6',
+    conversationType: TIM.TYPES.CONV_GROUP,
+    payload: { text: messageInput.value }
+  });
+  messageInput.value = '';
+});

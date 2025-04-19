@@ -10,39 +10,42 @@ const imageUpload = document.getElementById('image-upload');
  */
 export async function sendMessage() {
     const text = messageInput.value.trim();
-    if (!text) return;  // 空内容拦截
-  
-    // 创建文本消息（群组类型）
-    const msg = tim.createTextMessage({
-      to: '@TGS#165X5DTQ6', // TODO: 需替换为实际的群组ID (从腾讯云控制台获取)
-      conversationType: TIM.TYPES.CONV_GROUP, // 会话类型设为群组
-      payload: { text } // 消息载体包含处理后的文本
+    if (!text) return;
+
+    // 修复文本消息结构
+    const textMsg = tim.createTextMessage({
+      to: '@TGS#165X5DTQ6',
+      conversationType: TIM.TYPES.CONV_GROUP, // 补全会话类型
+      payload: { text } // 补全消息载体
     });
-  
-    // 发送消息（异步等待发送结果）
-    const { error } = await tim.sendMessage(msg);
+
+    // 发送文本消息
+    const { error } = await tim.sendMessage(textMsg);
     if (!error) {
-      // UI 更新（模拟成功状态）
       addMessageToUI({ 
         type: 'text', 
         content: text 
       });
-      messageInput.value = ''; // 清空输入框
+      messageInput.value = '';
+    }
+}
+
+// 修复图片消息结构
+imageUpload.addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const imageMsg = tim.createImageMessage({
+      to: '@TGS#165X5DTQ6',
+      conversationType: TIM.TYPES.CONV_GROUP,
+      payload: { file }
+    });
+    
+    const { error } = await tim.sendMessage(imageMsg);
+    if (!error) {
+      addMessageToUI({ 
+        type: 'image', 
+        content: imageMsg.payload.imageInfoArray[0].url 
+      });
     }
   }
-  
-  // 图片上传（保留原按钮交互）
-  imageUpload.addEventListener('change', async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const msg = tim.createImageMessage({
-        to: 'group_id',
-        conversationType: TIM.TYPES.CONV_GROUP,
-        payload: { file }
-      });
-      const { error, message } = await tim.sendMessage(msg);
-      if (!error) {
-        addMessageToUI({ type: 'image', content: message.payload.imageInfoArray[0].url });
-      }
-    }
-  });
+});
