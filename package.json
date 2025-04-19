@@ -4,6 +4,7 @@
   },
   "devDependencies": {
     "html-webpack-plugin": "^5.6.3",
+    "path": "^0.12.7",
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^6.0.1"
   }

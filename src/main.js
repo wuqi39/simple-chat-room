@@ -1,5 +1,12 @@
+// 修改前
 import TIM from 'tim-js-sdk';
-//import { LogLevel } from 'tim-js-sdk';
+
+// 修改后（需要确认实际文件位置）
+import TIM from './node_modules/tim-js-sdk/index.js';
+// 或使用腾讯云官方推荐的 CDN 方式
+// import TIM from 'https://cdn-go.cn/aegis/sdk/tim-js-sdk-2.27.6.js';
+
+import { LogLevel } from 'tim-js-sdk';
 import { joinGroup } from './group.js';
 import { addMessageToUI } from './ui.js';
 // 初始化IM（请替换成你的配置）
