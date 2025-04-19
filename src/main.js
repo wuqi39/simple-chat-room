@@ -55,5 +55,7 @@ function toggleAuthContainer() {
   authContainer.classList.toggle('hidden');
 }
 
-// 暴露到全局作用域
-window.toggleAuthContainer = toggleAuthContainer;
+// 确保全局挂载（新增 IIFE 包装）
+(function() {
+  window.toggleAuthContainer = toggleAuthContainer;
+})();

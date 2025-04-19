@@ -12,8 +12,8 @@
     <!-- 聊天部分 -->
     <div id="chat-container" class="chat-container">
         <div class="avatar-container">
-            <img src="./assets/avatar.png" onclick="toggleAuthContainer()">
-            <button onclick="toggleAuthContainer()">登录/注册</button>
+            <img src="avatar.png">
+            <button onclick="toggleAuthContainer()">登录</button>
         </div>
         <div id="chat-messages" class="chat-messages"></div>
         <input type="text" id="message-input" placeholder="输入消息">
@@ -44,7 +44,7 @@
     <script type="module" src="src/message.js"></script>
     <script type="module" src="src/password.js"></script>
     <script type="module" src="src/imageUpload.js"></script>
-    <script type="module" src="src/main.js"></script>-->
+    <script type="module" src="./src/main.js"></script>
     <script src="dist/bundle.js"></script>
 </body>
 <!-- 移除重复引入的 src/message.js -->
