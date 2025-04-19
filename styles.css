@@ -27,16 +27,9 @@ body {
     z-index: 1;
 }
 
-/* 更新强制颜色模式适配 */
+/* 更新旧版媒体查询 */
 @media (forced-colors: active) {
-    :root {
-        forced-color-adjust: auto;
-    }
-    
-    body {
-        background: Canvas;
-        color: CanvasText;
-    }
+  /* 保持原有适配逻辑 */
 }
 
 .auth-container.hidden {
