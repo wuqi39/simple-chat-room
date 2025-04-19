@@ -31,3 +31,13 @@ async function loginAsGuest() {
     console.error('登录失败:', e);
   }
 }
+/**
+ * 切换认证容器的显示状态,通过切换 CSS 类 'hidden' 控制登录/注册界面的显隐
+ * 通常绑定到登录按钮的点击事件
+ */
+function toggleAuthContainer() {
+  // 获取认证容器 DOM 元素
+  const authContainer = document.getElementById('auth-container');
+  // 切换隐藏类（依赖样式表中 .hidden 的 display: none 定义）
+  authContainer.classList.toggle('hidden');
+}

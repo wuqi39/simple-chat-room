@@ -27,6 +27,18 @@ body {
     z-index: 1;
 }
 
+/* 更新强制颜色模式适配 */
+@media (forced-colors: active) {
+    :root {
+        forced-color-adjust: auto;
+    }
+    
+    body {
+        background: Canvas;
+        color: CanvasText;
+    }
+}
+
 .auth-container.hidden {
     display: none;
 }
@@ -62,10 +74,29 @@ body {
 .avatar-container {
     position: absolute;
     top: 10px;
-    left: 10px;  /* 从 right 改为 left */
+    left: 10px;
     cursor: pointer;
-    width: 64px; /* 新增宽度定义 */
-    z-index: 2;  /* 确保显示层级 */
+    width: 64px;
+    z-index: 2;
+    display: flex;          /* 新增 flex 布局 */
+    flex-direction: column; /* 垂直排列子元素 */
+    gap: 10px;             /* 元素间距 */
+}
+
+/* 新增登录按钮样式 */
+.avatar-container button {
+    width: 100%;           /* 继承容器宽度 */
+    padding: 8px 0;
+    background: #9b59b6;   /* 主题色匹配背景渐变 */
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+}
+
+.avatar-container button:hover {
+    opacity: 0.8;
 }
 
 .avatar-container img {
