@@ -10,6 +10,8 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js'
     },
+    // 设置 mode 选项
+    mode: 'development', 
     // 模块加载规则
     module: {
         rules: [
@@ -26,6 +28,7 @@ module.exports = {
             filename: 'index.html'
         })
     ],
+    
     // 开发服务器配置
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
