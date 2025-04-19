@@ -14,7 +14,7 @@ export async function sendMessage() {
   
     // 创建文本消息（群组类型）
     const msg = tim.createTextMessage({
-      to: 'group_id', // TODO: 需替换为实际的群组ID (从腾讯云控制台获取)
+      to: '@TGS#165X5DTQ6', // TODO: 需替换为实际的群组ID (从腾讯云控制台获取)
       conversationType: TIM.TYPES.CONV_GROUP, // 会话类型设为群组
       payload: { text } // 消息载体包含处理后的文本
     });
