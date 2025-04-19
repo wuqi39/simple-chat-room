@@ -4,7 +4,7 @@ import { LogLevel } from 'tim-js-sdk';
 // 初始化IM（请替换成你的配置）
 const tim = TIM.create({
   SDKAppID: 1600076969, // 腾讯云控制台获取
-  logLevel: LogLevel.DEBUG
+  logLevel: 0 // 直接使用 DEBUG 对应的常量值
 });
 
 // 消息接收监听（保持UI更新逻辑）
