@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Kwin 的静态聊天室</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- 建议在 ICO 文件中包含以下尺寸：
+         16x16 (浏览器标签栏)
+         32x32 (任务栏快捷方式)
+         48x48 (Windows 桌面快捷方式)
+         256x256 (Retina 和高分辨率设备) -->
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -39,13 +45,17 @@
         <button id="register-button">注册</button>
         <button id="guest-button">以游客身份继续</button>
     </div>
-    <!-- 修改为引入拆分后的模块 
-    <script type="module" src="src/auth.js"></script>
+    <!-- 修改为引入拆分后的模块 -->
     <script type="module" src="src/message.js"></script>
-    <script type="module" src="src/password.js"></script>
-    <script type="module" src="src/imageUpload.js"></script>
     <script type="module" src="./src/main.js"></script>
     <script src="dist/bundle.js"></script>
+    
+    <script>
+    // 切换登录/注册窗口的显示状态
+    function toggleAuthContainer() {
+        document.getElementById('auth-container').classList.toggle('hidden');
+    }
+    </script>
 </body>
 <!-- 移除重复引入的 src/message.js -->
 </html>
