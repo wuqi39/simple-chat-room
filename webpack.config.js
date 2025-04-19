@@ -1,9 +1,10 @@
+// webpack.config.js
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     // 入口文件
-    entry: './src/script.js',
+    entry: './src/main.js',
     // 输出目录和文件名
     output: {
         path: path.resolve(__dirname, 'dist'),

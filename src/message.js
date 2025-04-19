@@ -1,3 +1,6 @@
+// message.js
+const imageUpload = document.getElementById('image-upload');
+
 // 原sendMessage函数改造
 export async function sendMessage() {
     const text = messageInput.value.trim();
