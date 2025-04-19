@@ -1,6 +1,7 @@
 import TIM from 'tim-js-sdk';
-import { LogLevel } from 'tim-js-sdk';
-
+//import { LogLevel } from 'tim-js-sdk';
+import { joinGroup } from './group.js';
+import { addMessageToUI } from './ui.js';
 // 初始化IM（请替换成你的配置）
 const tim = TIM.create({
   SDKAppID: 1600076969, // 腾讯云控制台获取
