@@ -37,17 +37,14 @@ tim.on(TIM.EVENT.MESSAGE_RECEIVED, handleMessageReceived);
 
 // 简化版游客登录（生产环境需后端签发userSig）
 async function loginAsGuest() {
-  // 新增预连接逻辑
-  await tim.setData({ 
-    connectionTimeout: 3000,  // 设置超时时间
-    heartbeatInterval: 5000   // 心跳间隔
-  });
-  
-  const userID = `guest_${Date.now()}`;
-  const userSig = 'your_generated_user_sig'; // 需后端生成，此处仅演示
+  // 添加登录状态检查
+  if (tim.isLogin()) return;
+
+  // 原有登录逻辑...
   try {
     await tim.login({ userID, userSig });
-    joinGroup(); // 加入群组
+    console.log('登录成功，当前用户:', userID);
+    joinGroup();
   } catch (e) {
     console.error('登录失败:', e);
   }
@@ -58,5 +55,5 @@ function toggleAuthContainer() {
   authContainer.classList.toggle('hidden');
 }
 
-// 新增全局访问
+// 暴露到全局作用域
 window.toggleAuthContainer = toggleAuthContainer;

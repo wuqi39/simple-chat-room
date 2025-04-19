@@ -27,9 +27,23 @@ body {
     z-index: 1;
 }
 
-/* 更新旧版媒体查询 */
+/* 更新强制颜色模式适配 */
 @media (forced-colors: active) {
-  /* 保持原有适配逻辑 */
+    :root {
+        forced-color-adjust: preserve-parent-color;
+    }
+    
+    .auth-container,
+    .chat-container {
+        border-color: ButtonText;
+        background-color: Canvas;
+    }
+    
+    .avatar-container button {
+        background-color: ButtonFace;
+        color: ButtonText;
+        border: 1px solid ButtonText;
+    }
 }
 
 .auth-container.hidden {
