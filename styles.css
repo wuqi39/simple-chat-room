@@ -58,17 +58,32 @@ body {
     background-color: white; /* 设置消息窗口背景为白色 */
 }
 
+/* 调整头像容器定位 */
 .avatar-container {
     position: absolute;
     top: 10px;
-    right: 10px;
+    left: 10px;  /* 从 right 改为 left */
     cursor: pointer;
+    width: 64px; /* 新增宽度定义 */
+    z-index: 2;  /* 确保显示层级 */
 }
 
 .avatar-container img {
     width: 64px;
     height: 64px;
     border-radius: 50%;
+    margin-bottom: 10px;  /* 新增下边距 */
 }
 
-/* 其他样式保持不变 */
+/* 调整消息窗口位置 */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    border-width: 1px;
+    border-style: solid;
+    border-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 1)) 1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 10px 10px 80px; /* 左侧留出头像空间 */
+    background-color: white;
+}
