@@ -3,15 +3,14 @@ import path from 'path'
 
 export default defineConfig({
   resolve: {
+    mainFields: ['module', 'main'], // 支持 CommonJS 模块
     alias: {
-      // 添加更明确的路径映射
       'tim-js-sdk': path.resolve(__dirname, 'node_modules/tim-js-sdk/index.js')
     }
   },
   build: {
-    // 确保构建时包含 SDK
     rollupOptions: {
-      external: ['tim-js-sdk'] 
+      // external: ['tim-js-sdk'] // 完全移除该配置
     }
   }
-})
+});

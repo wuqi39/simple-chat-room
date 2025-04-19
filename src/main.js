@@ -1,15 +1,6 @@
 // 修改前
-// import TIM from './node_modules/tim-js-sdk/index.js';
-
-// 修改后（通过别名引用）
 import TIM from 'tim-js-sdk'
-
-import { LogLevel } from 'tim-js-sdk';
-import { joinGroup } from './group.js';
-import { addMessageToUI } from './ui.js';
-// 初始化IM（请替换成你的配置）
-// 初始化优化建议（修复匿名函数警告）
-const tim = TIM.create({
+window.tim = TIM.create({ 
   SDKAppID: 1600076969,
   logLevel: LogLevel.DEBUG,
   // 新增地域配置（根据用户群体选择）
@@ -74,13 +65,35 @@ function toggleAuthContainer() {
   window.toggleAuthContainer = toggleAuthContainer;
 })();
 
-// 在文件最后添加消息发送逻辑
-document.getElementById('send-button').addEventListener('click', () => {
-  const messageInput = document.getElementById('message-input');
-  tim.sendMessage({
-    to: '@TGS#165X5DTQ6',
-    conversationType: TIM.TYPES.CONV_GROUP,
-    payload: { text: messageInput.value }
+// 在文件末尾添加导出
+// 在 TIM 实例化部分需要确认的配置
+// 在文件顶部添加配置导入
+import config from '../config.js';
+
+// 修改 TIM 初始化部分
+const tim = TIM.create({
+  SDKAppID: config.SDKAppID, // 使用配置中的应用ID
+  overrides: { 
+    region: 'ap-xian' // ✔️ 确认地域代码正确性
+  }
+});
+
+// 在群组操作部分需要添加实际群组ID
+async function joinGroup() {
+  await tim.joinGroup({
+    groupID: '@TGS#165X5DTQ6', // 🔧 需替换为控制台创建的真实群组ID
+    type: TIM.TYPES.GROUP_AVCHATROOM // 根据群组类型调整
   });
-  messageInput.value = '';
+}
+
+// 消息发送事件需要确认接收方
+document.getElementById('send-button').addEventListener('click', () => {
+  tim.sendMessage({
+    to: '@TGS#165X5DTQ6', // 🔧 需与群组ID保持一致
+    conversationType: TIM.TYPES.CONV_GROUP
+  });
+});
+
+document.getElementById('send-button').addEventListener('click', () => {
+  import('./message.js').then(module => module.sendMessage());
 });

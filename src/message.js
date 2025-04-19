@@ -1,22 +1,18 @@
+// 修复：将导入语句移到文件顶部
+import { tim } from './main.js'
+
 const messageInput = document.getElementById('message-input');
 const imageUpload = document.getElementById('image-upload');
 
-/**
- * 发送文本消息到群组
- * 1. 获取并验证输入内容
- * 2. 创建群聊文本消息体
- * 3. 发送消息并处理结果
- * 4. 成功时更新UI并清空输入框
- */
 export async function sendMessage() {
     const text = messageInput.value.trim();
     if (!text) return;
 
-    // 修复文本消息结构
+    // 修复：移除函数内的重复导入
     const textMsg = tim.createTextMessage({
       to: '@TGS#165X5DTQ6',
-      conversationType: TIM.TYPES.CONV_GROUP, // 补全会话类型
-      payload: { text } // 补全消息载体
+      conversationType: tim.TYPES.CONV_GROUP, // 使用小写 tim 引用
+      payload: { text }
     });
 
     // 发送文本消息
@@ -30,22 +26,14 @@ export async function sendMessage() {
     }
 }
 
-// 修复图片消息结构
+// 图片上传部分也需要修改
+// 需要补充图片上传处理
 imageUpload.addEventListener('change', async (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const imageMsg = tim.createImageMessage({
-      to: '@TGS#165X5DTQ6',
-      conversationType: TIM.TYPES.CONV_GROUP,
-      payload: { file }
-    });
-    
-    const { error } = await tim.sendMessage(imageMsg);
-    if (!error) {
-      addMessageToUI({ 
-        type: 'image', 
-        content: imageMsg.payload.imageInfoArray[0].url 
-      });
+  const imageMsg = tim.createImageMessage({
+    to: '@TGS#165X5DTQ6', // 🔧 需保持与群组ID一致
+    payload: {
+      file: e.target.files[0],
+      imageFormat: 1 // 1-原图，2-大图，3-缩略图
     }
-  }
+  });
 });

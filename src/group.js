@@ -1,3 +1,5 @@
+import { tim } from './main.js'
+
 // 加入群组（需提前在腾讯云控制台创建）
 function joinGroup() {
   tim.joinGroup({
