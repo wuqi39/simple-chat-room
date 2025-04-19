@@ -3,7 +3,7 @@ import { LogLevel } from 'tim-js-sdk';
 
 // 初始化IM（请替换成你的配置）
 const tim = TIM.create({
-  SDKAppID: 1400888888, // 腾讯云控制台获取
+  SDKAppID: 1600076969, // 腾讯云控制台获取
   logLevel: LogLevel.DEBUG
 });
 
