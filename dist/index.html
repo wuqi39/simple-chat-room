@@ -1,1 +1,50 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kwin 的静态聊天室</title><link rel="stylesheet" href="styles.css"><script defer="defer" src="bundle.js"></script></head><body><div id="chat-container" class="chat-container"><div class="avatar-container"><img src="avatar.png" alt="头像" id="avatar-button" onclick="toggleAuthContainer()"></div><div id="chat-messages" class="chat-messages"></div><input id="message-input" placeholder="输入消息"> <button id="send-button">发送</button> <input type="file" id="image-upload"> <button id="load-more">加载更多</button></div><div id="auth-container" class="auth-container hidden"><h2>登录或注册</h2><div><input id="username" placeholder="用户名"><div id="username-error" class="error-message"></div></div><div><input type="password" id="password" placeholder="密码"> <span class="password-toggle" onclick="togglePasswordVisibility()">👁</span><div id="password-error" class="error-message"></div><div id="password-strength" class="password-strength"></div></div><button id="login-button">登录</button> <button id="register-button">注册</button> <button id="guest-button">以游客身份继续</button></div><script type="module" src="src/main.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Kwin 的静态聊天室</title>
+    <link rel="stylesheet" href="styles.css">
+<script defer src="bundle.js"></script></head>
+
+<body>
+    <!-- 聊天部分 -->
+    <div id="chat-container" class="chat-container">
+        <div class="avatar-container">
+            <img src="avatar.png" alt="头像" id="avatar-button" onclick="toggleAuthContainer()">
+        </div>
+        <div id="chat-messages" class="chat-messages"></div>
+        <input type="text" id="message-input" placeholder="输入消息">
+        <button id="send-button">发送</button>
+        <input type="file" id="image-upload">
+        <button id="load-more">加载更多</button>
+    </div>
+    <!-- 登录注册部分 -->
+    <div id="auth-container" class="auth-container hidden">
+        <h2>登录或注册</h2>
+        <div>
+            <input type="text" id="username" placeholder="用户名">
+            <div id="username-error" class="error-message"></div>
+        </div>
+        <div>
+            <input type="password" id="password" placeholder="密码">
+            <span class="password-toggle" onclick="togglePasswordVisibility()">👁</span>
+            <div id="password-error" class="error-message"></div>
+            <!-- 添加密码强度提示元素 -->
+            <div id="password-strength" class="password-strength"></div>
+        </div>
+        <button id="login-button">登录</button>
+        <button id="register-button">注册</button>
+        <button id="guest-button">以游客身份继续</button>
+    </div>
+    <!-- 修改为引入拆分后的模块 
+    <script type="module" src="src/auth.js"></script>
+    <script type="module" src="src/message.js"></script>
+    <script type="module" src="src/password.js"></script>
+    <script type="module" src="src/imageUpload.js"></script>
+    <script type="module" src="src/main.js"></script>-->
+    <script src="dist/bundle.js"></script>
+</body>
+<!-- 移除重复引入的 src/message.js -->
+</html>
