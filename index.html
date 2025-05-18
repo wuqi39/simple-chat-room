@@ -4,58 +4,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Kwin 的静态聊天室</title>
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <!-- 建议在 ICO 文件中包含以下尺寸：
-         16x16 (浏览器标签栏)
-         32x32 (任务栏快捷方式)
-         48x48 (Windows 桌面快捷方式)
-         256x256 (Retina 和高分辨率设备) -->
-    <link rel="stylesheet" href="styles.css">
+    <title>Kwin 的聊天室</title>
+    
+    <link href="./styles.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#9b59b6',
+                        secondary: '#71b7e6',
+                        dark: '#1a1a1a',
+                        light: '#f8f9fa',
+                        neutral: '#e5e7eb',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-out',
+                        'slide-up': 'slideUp 0.3s ease-out',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(10px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 
-<body>
-    <!-- 聊天部分 -->
-    <div id="chat-container" class="chat-container">
-        <div class="avatar-container">
-            <img src="avatar.png">
-            <button onclick="toggleAuthContainer()">登录</button>
+<body class="bg-gradient-primary min-h-screen flex items-center justify-center p-4 font-inter antialiased">
+    <!-- 聊天界面容器 -->
+    <div id="chat-container" class="chat-container bg-dark rounded-xl shadow-2xl w-full max-w-4xl h-[90vh] 
+          md:h-[92vh] relative flex flex-col overflow-hidden transition-all duration-300 transform hover:shadow-3xl">
+        
+        <!-- 顶部导航栏 -->
+        <header class="bg-dark/90 backdrop-blur-sm text-white px-6 py-4 flex items-center justify-between border-b border-gray-800">
+            <div class="flex items-center space-x-3">
+                <div class="relative">
+                    <img src="https://picsum.photos/200" alt="聊天室图标" class="w-10 h-10 rounded-full border-2 border-primary">
+                    <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-dark"></span>
+                </div>
+                <h1 class="text-xl font-bold text-shadow">Kwin 的现代聊天室</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="theme-toggle" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fa fa-moon-o"></i>
+                </button>
+                <button id="settings-button" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fa fa-cog"></i>
+                </button>
+                <button id="toggle-auth" class="bg-primary/90 hover:bg-primary text-white font-medium py-1.5 px-4 rounded-lg 
+                      transition-all duration-300 shadow-md hover:shadow-lg flex items-center">
+                    <i class="fa fa-user-circle mr-2"></i> 以游客身份登录
+                </button>
+            </div>
+        </header>
+        
+        <!-- 消息显示区域 -->
+        <div id="chat-messages" class="chat-messages flex-1 overflow-y-auto bg-white/5 backdrop-blur-sm m-4 md:m-6 rounded-xl 
+              shadow-inner p-4 space-y-4 scrollbar-hide">
+            <!-- 消息将通过JS动态添加 -->
+            <div class="flex justify-center items-center py-4">
+                <div class="bg-gray-800/50 text-gray-300 text-xs px-3 py-1 rounded-full">
+                    今天 14:30
+                </div>
+            </div>
         </div>
-        <div id="chat-messages" class="chat-messages"></div>
-        <input type="text" id="message-input" placeholder="输入消息">
-        <button id="send-button">发送</button>
-        <input type="file" id="image-upload">
-        <button id="load-more">加载更多</button>
+        
+        <!-- 聊天输入区域 -->
+        <div class="p-4 bg-dark/90 backdrop-blur-sm border-t border-gray-800">
+            <div class="flex flex-col space-y-3">
+                <div class="flex items-center gap-3">
+                    <div class="flex space-x-2">
+                        <button class="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-800/50">
+                            <i class="fa fa-smile-o"></i>
+                        </button>
+                        <button class="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-800/50">
+                            <i class="fa fa-paperclip"></i>
+                        </button>
+                        <label for="image-upload" class="text-gray-400 hover:text-white transition-colors p-2 rounded-full hover:bg-gray-800/50 cursor-pointer">
+                            <i class="fa fa-image"></i>
+                        </label>
+                        <input type="file" id="image-upload" accept="image/*" class="hidden">
+                    </div>
+                    <input type="text" id="message-input" placeholder="输入消息..." class="flex-1 px-4 py-3 rounded-full 
+                          bg-gray-800/50 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 
+                          focus:ring-primary/50 focus:border-primary transition-all duration-300 shadow-sm">
+                    <button id="send-button" class="bg-primary hover:bg-primary/90 text-white rounded-full p-3 shadow-md 
+                          transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center min-w-[48px]">
+                        <i class="fa fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="flex justify-between items-center text-xs text-gray-500">
+                    <span>按 Enter 发送，Shift+Enter 换行</span>
+                    <span id="typing-indicator" class="hidden animate-pulse-slow">
+                        <i class="fa fa-circle-o-notch fa-spin mr-1"></i>正在输入...
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- 登录注册部分 -->
-    <div id="auth-container" class="auth-container hidden">
-        <h2>登录或注册</h2>
-        <div>
-            <input type="text" id="username" placeholder="用户名">
-            <div id="username-error" class="error-message"></div>
-        </div>
-        <div>
-            <input type="password" id="password" placeholder="密码">
-            <span class="password-toggle" onclick="togglePasswordVisibility()">👁</span>
-            <div id="password-error" class="error-message"></div>
-            <!-- 添加密码强度提示元素 -->
-            <div id="password-strength" class="password-strength"></div>
-        </div>
-        <button id="login-button">登录</button>
-        <button id="register-button">注册</button>
-        <button id="guest-button">以游客身份继续</button>
-    </div>
-    <!-- 修改为引入拆分后的模块 -->
-    <script type="module" src="src/message.js"></script>
-    <script type="module" src="./src/main.js"></script>
-    <script src="dist/bundle.js"></script>
     
-    <script>
-    // 切换登录/注册窗口的显示状态
-    function toggleAuthContainer() {
-        document.getElementById('auth-container').classList.toggle('hidden');
-    }
+    <!-- 游客登录面板 -->
+    <div id="auth-container" 
+         class="auth-container bg-white rounded-xl shadow-2xl w-full max-w-md p-6 
+                absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 
+                opacity-0 scale-95 pointer-events-none
+                transition-all duration-300 backdrop-blur-sm">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-900">加入聊天室</h2>
+            <button id="close-auth" class="text-gray-500 hover:text-gray-700 transition-colors p-2">
+                <i class="fa fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <div class="space-y-4">
+            <button id="guest-login" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-3 px-4 rounded-lg 
+                  transition-all duration-300 flex items-center justify-center">
+                <i class="fa fa-user-o mr-2"></i> 以游客身份继续
+            </button>
+        </div>
+    </div>
+
+    <script type="module">
+        import './script.js';
     </script>
 </body>
-<!-- 移除重复引入的 src/message.js -->
+
 </html>
