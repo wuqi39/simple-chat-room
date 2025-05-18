@@ -1,5 +1,4 @@
 .ssh/
-config.js/
 **/IntegrationServer/datastore/
 **/IntegrationServer/db/
 **/IntegrationServer/DocumentStore/
