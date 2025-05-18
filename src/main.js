@@ -1,6 +1,6 @@
 // 添加CSS导入
-import './styles.css';
-import config from '../config.js';  // 新路径（src目录下）
+import '/src/styles.css';
+import config from '/config.js';  // 新路径（src目录下）
 
 // 动态加载腾讯云SDK
 const loadTIM = async () => {
@@ -182,7 +182,7 @@ if (tim) {
 }
 
 // 新增模块导入
-import { sendMessage, handleImageUpload } from './message.js';
+import { sendMessage, handleImageUpload } from '/src/message.js';
 
 // 绑定发送按钮事件
 document.getElementById('send-button').addEventListener('click', sendMessage);

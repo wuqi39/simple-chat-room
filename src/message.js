@@ -1,5 +1,5 @@
 // 修改导入语句
-import { tim, isTIMInitialized } from './main.js';
+import { tim, isTIMInitialized } from '/src/main.js';
 
 const messageInput = document.getElementById('message-input');
 const imageUpload = document.getElementById('image-upload');

@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 发送消息按钮事件
     const sendButton = document.getElementById('send-button');
     sendButton.addEventListener('click', async () => {
-        const { sendMessage } = await import('./message.js');
+        const { sendMessage } = await import('/src/message.js');
         await sendMessage();
     });
 
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     messageInput.addEventListener('keypress', async (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            const { sendMessage } = await import('./message.js');
+            const { sendMessage } = await import('/src/message.js');
             await sendMessage();
         }
     });
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 图片上传事件
     const imageUpload = document.getElementById('image-upload');
     imageUpload.addEventListener('change', async (e) => {
-        const { handleImageUpload } = await import('./message.js');
+        const { handleImageUpload } = await import('/src/message.js');
         await handleImageUpload(e);
     });
 
@@ -141,13 +141,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // 游客登录按钮事件
         const guestButton = document.getElementById('guest-button');
         guestButton.addEventListener('click', async () => {
-            const { loginAsGuest } = await import('./main.js');
+            const { loginAsGuest } = await import('/src/main.js');
             await loginAsGuest();
             toggleAuthContainer(); // 隐藏登录注册面板
         });
     });
 });
-     
+ 
 // 添加系统消息
 const addSystemMessage = (content) => {
     const chatMessages = document.getElementById('chat-messages');
