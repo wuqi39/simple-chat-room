@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kwin 的聊天室</title>
-    
-    <link href="/src/styles.css" rel="stylesheet" />
+    <link href="./styles.css" rel="stylesheet" />
+    <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script>
@@ -42,7 +42,7 @@
             }
         }
     </script>
-<script defer src="/vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_sour-106443.js"></script><script defer src="/main.js"></script></head>
+<script defer src="/vendors.ead7e44ff3030339759f.js"></script><script defer src="/main.27ed5a467318c5d114b0.js"></script></head>
 
 <body class="bg-gradient-primary min-h-screen flex items-center justify-center p-4 font-inter antialiased">
     <!-- 聊天界面容器 -->
@@ -138,9 +138,10 @@
         </div>
     </div>
 
-    <script type="module">
-        import '/src/script.js';
-    </script>
+    <!-- 引入脚本（调整顺序，确保模块先加载） -->
+    <script type="module" src="./src/main.js"></script>  <!-- 主逻辑模块 -->
+    <script type="module" src="./src/message.js"></script>  <!-- 消息处理模块 -->
+    <script type="module" src="./src/script.js"></script> 
 </body>
 
 </html>

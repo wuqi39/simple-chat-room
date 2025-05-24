@@ -1,156 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 基础重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 /* 整体布局 */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-family: 'Inter', system-ui, sans-serif;
     height: 100vh;
-    margin: 0;
-    background: linear-gradient(135deg, #71b7e6, #9b59b6); /* 渐变背景，提供视觉深度 */
-}
-
-/* 登录注册容器 */
-.auth-container {
-    width: 400px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* 添加阴影增强立体感 */
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1; /* 确保显示在背景之上 */
-}
-
-/* 强制颜色模式适配 - 确保在高对比度模式下仍有良好显示效果 */
-/* 替换旧的 -ms-high-contrast */
-@media (forced-colors: active) {
-  /* 您的样式 */
-}
-
-.auth-container.hidden {
-    display: none; /* 用于隐藏登录/注册容器 */
+    background: linear-gradient(135deg, #71b7e6, #9b59b6);
 }
 
 /* 聊天容器 */
 .chat-container {
-    width: 600px; /* 扩大聊天容器宽度，提供更宽敞的聊天空间 */
-    height: 500px; /* 增加聊天容器高度 */
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 20px;
-    position: relative;
+    width: min(90%, 600px);
+    height: 90vh;
+    margin: 5vh auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
-    background-color: black; /* 设置聊天容器背景为黑色，提供深色主题 */
 }
 
-/* 显示消息的窗口 */
+/* 消息显示区域 */
 .chat-messages {
-    flex: 1; /* 占据剩余空间 */
-    overflow-y: auto; /* 添加垂直滚动条，消息过多时可滚动查看 */
-    /* 使用 border-image 实现黑色渐变边框，增强视觉效果 */
-    border-width: 1px;
-    border-style: solid;
-    border-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 1)) 1;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px; /* 添加外边距，使消息窗口与容器有间隔 */
-    background-color: white; /* 设置消息窗口背景为白色，与黑色容器形成对比 */
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background: #f8f9fa;
 }
 
-/* 头像和操作按钮容器 */
-.avatar-container {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    cursor: pointer;
-    width: 64px;
-    z-index: 2; /* 确保显示在聊天内容之上 */
-    display: flex;          /* 使用flex布局 */
-    flex-direction: column; /* 垂直排列子元素 */
-    gap: 10px;             /* 元素间距 */
+/* 输入区域 */
+.input-area {
+    display: flex;
+    gap: 10px;
+    padding: 20px;
+    border-top: 1px solid #e5e7eb;
 }
 
-/* 登录/注册按钮样式 */
-.avatar-container button {
-    width: 100%;           /* 继承容器宽度 */
-    padding: 8px 0;
-    background: #9b59b6;   /* 主题色匹配背景渐变 */
+#message-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    outline: none;
+}
+
+#send-btn, .image-upload-label {
+    padding: 12px 24px;
+    background: #9b59b6;
     color: white;
     border: none;
     border-radius: 20px;
     cursor: pointer;
-    transition: opacity 0.3s; /* 添加悬停过渡效果 */
+    transition: opacity 0.3s;
 }
 
-.avatar-container button:hover {
-    opacity: 0.8; /* 悬停时降低不透明度，提供视觉反馈 */
+#send-btn:hover, .image-upload-label:hover {
+    opacity: 0.8;
 }
 
-.avatar-container img {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    margin-bottom: 10px;  /* 新增下边距，分隔头像和按钮 */
+/* 消息气泡 */
+.message {
+    margin: 10px 0;
+    display: flex;
+    gap: 10px;
 }
 
-/* 调整消息窗口位置，为左侧头像和按钮留出空间 */
-.chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    border-width: 1px;
-    border-style: solid;
-    border-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 1)) 1;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px 10px 10px 80px; /* 左侧留出头像空间 */
-    background-color: white;
+.message.self {
+    justify-content: flex-end;
 }
 
-/* 来自 index.html 的样式 */
-@layer utilities {
-    .content-auto {
-        content-visibility: auto;
-    }
-    .gradient-border {
-        border-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 1)) 1;
-    }
-    .bg-gradient-primary {
-        background: linear-gradient(135deg, #71b7e6, #9b59b6);
-    }
-    .scrollbar-hide::-webkit-scrollbar {
-        display: none;
-    }
-    .scrollbar-hide {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
-    .text-shadow {
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    .message-bubble {
-        position: relative;
-    }
-    .message-bubble::after {
-        content: '';
-        position: absolute;
-        bottom: 10px;
-        width: 0;
-        height: 0;
-        border: 8px solid transparent;
-    }
-    .message-bubble-left::after {
-        left: -16px;
-        border-right-color: #f3f4f6;
-    }
-    .message-bubble-right::after {
-        right: -16px;
-        border-left-color: #9b59b6;
-    }
+.message-content {
+    max-width: 70%;
+    padding: 12px 18px;
+    border-radius: 15px;
+    position: relative;
+}
+
+.message.self .message-content {
+    background: #9b59b6;
+    color: white;
+}
+
+.message.other .message-content {
+    background: #e5e7eb;
+    color: #1a1a1a;
+}
+
+/* 动画 */
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }

@@ -4,15 +4,27 @@
     "build": "webpack --mode production"
   },
   "devDependencies": {
+    "@babel/core": "^7.27.1",
+    "@babel/preset-env": "^7.27.2",
+    "@tailwindcss/postcss": "^4.1.7",
+    "autoprefixer": "^10.4.21",
+    "babel-loader": "^10.0.0",
+    "compression-webpack-plugin": "^11.1.0",
     "css-loader": "^7.1.2",
+    "dotenv-webpack": "^8.1.0",
     "html-webpack-plugin": "^5.6.3",
+    "postcss": "^8.5.3",
+    "postcss-loader": "^8.1.1",
+    "postcss-preset-env": "^10.1.6",
     "style-loader": "^4.0.0",
-    "webpack": "^5.99.7",
+    "tailwindcss": "^4.1.7",
+    "webpack": "^5.99.8",
     "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.1"
   },
   "dependencies": {
+    "cos-js-sdk-v5": "^1.10.1",
     "tim-js-sdk": "^2.27.6",
     "tls-sig-api-v2": "^1.0.2"
   },

@@ -1,28 +1,25 @@
-// 修改导入语句
-import { tim, isTIMInitialized } from '/src/main.js';
-
-const messageInput = document.getElementById('message-input');
-const imageUpload = document.getElementById('image-upload');
-
-// 在发送消息前检查SDK状态
-export const sendMessage = async () => {
-    if (!isTIMInitialized) {
-        alert('TIMM SDK 还未初始化，请稍后再试。');
+// message.js
+import { getTIM, isInitialized } from './timUtils.js';
+import TIM from 'tim-js-sdk/tim-js-friendship.es.js';
+export async function sendMessage() {
+    if (!isInitialized()) {
+        alert('TIM SDK 还未初始化，请稍后再试。');
         return;
     }
 
+    const messageInput = document.getElementById('message-input');
     const text = messageInput.value.trim();
     if (!text) return;
 
+    const tim = getTIM();
     const textMsg = tim.createTextMessage({
         to: '@TGS#165X5DTQ6',
         conversationType: tim.TYPES.CONV_GROUP,
         payload: { text }
     });
 
-    // 发送文本消息
-    const { error } = await tim.sendMessage(textMsg);
-    if (!error) {
+    const res = await tim.sendMessage(textMsg);
+    if (res.code === 0) {
         addMessageToUI({
             type: 'text',
             sender: '我',
@@ -34,12 +31,13 @@ export const sendMessage = async () => {
 
 // 图片上传处理函数
 export async function handleImageUpload(e) {
-    if (!isTIMInitialized) {
+    if (!isInitialized()) {
         alert('TIM SDK 还未初始化，请稍后再试。');
         return;
     }
 
     if (e.target.files && e.target.files[0]) {
+        const tim = getTIM();
         const imageMsg = tim.createImageMessage({
             to: '@TGS#165X5DTQ6', // 🔧 需保持与群组ID一致
             payload: {
@@ -48,8 +46,8 @@ export async function handleImageUpload(e) {
             }
         });
 
-        const { error } = await tim.sendMessage(imageMsg);
-        if (!error) {
+        const res = await tim.sendMessage(imageMsg);
+        if (res.code === 0) {
             const reader = new FileReader();
             reader.onload = function (e) {
                 addMessageToUI({
@@ -63,7 +61,7 @@ export async function handleImageUpload(e) {
     }
 }
 
-// 添加消息到UI
+// 添加消息到UI（保持原有代码不变）
 const addMessageToUI = ({ type, sender, content }) => {
     const chatMessages = document.getElementById('chat-messages');
     const messageDiv = document.createElement('div');
